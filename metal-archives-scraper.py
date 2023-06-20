@@ -21,12 +21,7 @@ driver.get("https://www.metal-archives.com/release/upcoming")
 time.sleep(8)
 html = driver.page_source
 
-# For actual scraping
-# url = "https://www.metal-archives.com/release/upcoming"
-# response = requests.get(url)
-# metalSoup = BeautifulSoup(response.content, "html.parser")
 metalSoup = BeautifulSoup(html, "html.parser")
-# For actual scraping
 
 driver.quit()
 
