@@ -6,6 +6,7 @@ This is an early version! Posting the data to Lemmy already works when overwriti
 In general I would advise to use this only manually until I have finished testing it thoroughly.
 
 ## Installation
+Clone this repository to your machine
 ### Running in Virtual Environment
 I recommend setting up a virtual environment to install the python requirements
 
