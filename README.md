@@ -1,4 +1,4 @@
-# Lemmy_MetalNewReleasesBot
+# Lemmy New Metal Releases Bot
 A bot that posts new Metal releases (Albums, Singles) to Lemmy in a weekly release thread.
 
 ## Installation
@@ -52,12 +52,12 @@ Linux
 ```
 cd /this/git/project
 source your_environment/bin/activate  <- Skip this if you're not using a virtual environment
-python3 metal-archives-scraper.py 
+python3 run_bot.py 
 ```
 Windows
 ```
 cd /this/git/project
 py -m venv your_environment
 .\your_environment\Scripts\activate  <- Skip this if you're not using a virtual environment
-.\metal-archives-scraper.py 
+.\run_bot.py 
 ```
