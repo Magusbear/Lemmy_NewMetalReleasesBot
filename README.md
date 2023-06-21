@@ -1,5 +1,9 @@
 # Lemmy New Metal Releases Bot
-A bot that posts new Metal releases (Albums, Singles) to Lemmy in a weekly release thread.
+A bot that posts new Metal releases (Albums, Singles) to Lemmy in a weekly release thread using data from Metal-Archives.
+
+This is an early version! Posting the data to Lemmy already works when overwriting the dates and in theory it should also already be able to run continuously and post every friday but **I haven't tested this functionality yet, at all!**
+
+In general I would advise to use this only manually until I have finished testing it thoroughly.
 
 ## Installation
 ### Running in Virtual Environment
@@ -46,7 +50,7 @@ Windows
 py -m pip install -r requirements.txt
 ```
 ## Usage
-Run
+Rename the default.env to .env, then open it and fill out all the necessary fields.
 
 Linux
 ```
@@ -61,3 +65,8 @@ py -m venv your_environment
 .\your_environment\Scripts\activate  <- Skip this if you're not using a virtual environment
 .\run_bot.py 
 ```
+
+After starting the bot it will ask you if you want to change settings. Generally this is not needed if you filled out the .env. However, it can be used to overwrite the current weekday and the date you want releases to be listed for to create a post outside of the normal schedule. This is not meant for "production" though.
+
+## Contribution and License
+This project is licensed through the MIT License. I encourage everyone to contribute.
