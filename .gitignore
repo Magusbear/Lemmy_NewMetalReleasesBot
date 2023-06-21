@@ -1,4 +1,5 @@
 test_files/
 LemmyBotEnv/
+__pycache__
 test.html
 *.log
