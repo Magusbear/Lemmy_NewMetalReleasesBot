@@ -24,29 +24,29 @@ def create_Request(wantedMonth):
         return wantedMonthString
 
 
-
-# Set up Firefox webdriver in headless mode
-# options = Options()
-# options.add_argument('-headless')
-# driver = webdriver.Firefox(options=options)
+def get_html():
+    # Set up Firefox webdriver in headless mode
+    options = Options()
+    options.add_argument('-headless')
+    driver = webdriver.Firefox(options=options)
+    # Need selenium to delay the scraping because the site needs ~5 seconds to load
+    driver.get("https://www.metal-archives.com/release/upcoming")
+    time.sleep(8)                                                   # 8 secs should be enough time for the site to load
+    html = driver.page_source                                       # Scraping the html
+    metalSoup = BeautifulSoup(html, "html.parser")                  # Using bs4 to parse the html
+    return metalSoup
+    driver.quit()                                                   # Quit selenium
 
 # For local testing
-def get_html():
-    filename = "test.html"
-    with open(filename, "r") as file:
-        html_content = file.read()
-    metalSoup = BeautifulSoup(html_content, "html.parser")
-    return metalSoup
+# def get_html():
+#     filename = "test.html"
+#     with open(filename, "r") as file:
+#         html_content = file.read()
+#     metalSoup = BeautifulSoup(html_content, "html.parser")
+#     return metalSoup
 # for local Testing
 
-# Need selenium to delay the scraping because the site needs ~5 seconds to load
-# driver.get("https://www.metal-archives.com/release/upcoming")
-# time.sleep(8)                                                   # 8 secs should be enough time for the site to load
-# html = driver.page_source                                       # Scraping the html
 
-# metalSoup = BeautifulSoup(html, "html.parser")                  # Using bs4 to parse the html
-
-# driver.quit()                                                   # Quit selenium
 
 def get_data_list(metalSoup):
     rows = metalSoup.find_all("tr")                                 # Every row of the release list is a "tr" class (named either odd or even)
