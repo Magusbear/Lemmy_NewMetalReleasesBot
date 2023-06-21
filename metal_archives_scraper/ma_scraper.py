@@ -68,7 +68,7 @@ def get_wanted_list(data_list,wantedMonthString,wantedGenre,wantedDay):
     for data in data_list:                                          # loop through data list to find releases and add them to the wanted list
         genre = data[3]
         release_date = data[4]
-        if wantedGenre in genre.lower() and wantedDay in release_date.lower() and wantedMonthString in release_date.lower():
+        if wantedGenre in genre.lower() and wantedDay in release_date.lower() and wantedMonthString.lower() in release_date.lower():
             wanted_list.append(data)
     return wanted_list
 
