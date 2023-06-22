@@ -34,8 +34,9 @@ def get_html():
     time.sleep(8)                                                   # 8 secs should be enough time for the site to load
     html = driver.page_source                                       # Scraping the html
     metalSoup = BeautifulSoup(html, "html.parser")                  # Using bs4 to parse the html
-    return metalSoup
     driver.quit()                                                   # Quit selenium
+    return metalSoup
+
 
 # For local testing
 # def get_html():
