@@ -1,7 +1,7 @@
 import metal_archives_scraper.ma_scraper as ma_scraper
 import Utils.Bot_Utils as Bot_Utils
 import lemmy_api.lemmy_api_tasker as lemmy_api_tasker
-from config.config import set_for_production, wantedGenre, lemmy_instance, title, community_id, last_post_id, release_day, username_or_email, password, last_post_date
+from config.config import loop_bot, does_post_exist, set_for_production, wantedGenre, lemmy_instance, title, community_id, last_post_id, release_day, username_or_email, password, last_post_date
 from dotenv import dotenv_values, set_key
 import time
 
@@ -28,7 +28,7 @@ if input("Do you want to change settings? 'y/n'") == "y":
 
 # Bot
 # Post to Lemmy function
-def post_to_lemmy():
+def post_to_lemmy(currentWeekday, does_post_exist, wantedDay, wantedMonth, community_id, lemmy_instance, title):
     if currentWeekday == release_day and does_post_exist == False:
         # Call scraper to get release list
         wanted_list,wantedMonthString = ma_scraper.get_releaseList(wantedGenre,wantedDay,wantedMonth)
@@ -69,7 +69,8 @@ def post_to_lemmy():
         today, currentWeekday, wantedMonth, wantedDay = Bot_Utils.get_date()    # refresh date
 
 # Scrapes and creates title and body but posts it only into the console, not to Lemmy
-def post_locally():
+
+def post_locally(currentWeekday, does_post_exist, wantedDay, wantedMonth, title):
     if currentWeekday == release_day and does_post_exist == False:
         # Call scraper to get release list
         wanted_list,wantedMonthString = ma_scraper.get_releaseList(wantedGenre,wantedDay,wantedMonth)
@@ -103,11 +104,10 @@ def post_locally():
         time.sleep(43200)
         today, currentWeekday, wantedMonth, wantedDay = Bot_Utils.get_date()    # refresh date        
 
-does_post_exist = False
-loop_bot = True
 # Bot runs only on friday
 while loop_bot == True:
     if set_for_production == True:
-        post_to_lemmy()
+        post_to_lemmy(currentWeekday, does_post_exist, wantedDay, wantedMonth, community_id, lemmy_instance, title)
     else:
-        post_locally()                          # Scrapes and creates title and body but posts it only into the console, not to Lemmy
+        # Scrapes and creates title and body but posts it only into the console, not to Lemmy
+        post_locally(currentWeekday, does_post_exist, wantedDay, wantedMonth, title)

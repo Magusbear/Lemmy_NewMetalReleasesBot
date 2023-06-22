@@ -12,3 +12,5 @@ password = env_vars["password"]
 last_post_date = env_vars["last_post_date"]
 title = env_vars['post_title']
 set_for_production = env_vars['set_for_production']
+does_post_exist = False
+loop_bot = True
