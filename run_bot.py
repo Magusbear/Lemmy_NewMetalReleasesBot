@@ -29,17 +29,16 @@ if input("Do you want to change settings? 'y/n'") == "y":
 # Bot
 # Post to Lemmy function
 def post_to_lemmy(currentWeekday, does_post_exist, wantedDay, wantedMonth, community_id, lemmy_instance, title):
-    if currentWeekday == release_day and does_post_exist == False:
+    if int(currentWeekday) == int(release_day) and does_post_exist == 'False':
         # Call scraper to get release list
         wanted_list,wantedMonthString = ma_scraper.get_releaseList(wantedGenre,wantedDay,wantedMonth)
         # Create body text
         body = ""
-        body += (f'{wantedGenre} releases for {wantedDay} of {wantedMonthString}: \n')
+        body += (f'{wantedGenre} releases for {wantedDay}. of {wantedMonthString}: \n')
         for type in release_type_list:                                  # cheeky way of sorting the list
             releases_list = Bot_Utils.sortByReleaseType(type, wanted_list,wantedGenre,wantedDay,wantedMonthString)
             for string in releases_list:
                 body += string
-            
 
         # Get User Token
         user_token = lemmy_api_tasker.get_user_token(username_or_email, password, lemmy_instance)
@@ -54,11 +53,14 @@ def post_to_lemmy(currentWeekday, does_post_exist, wantedDay, wantedMonth, commu
         # posted_date = "15.03.2023"
 
         if post_successful == True:
+            env_vars = dotenv_values(".env")
             env_vars['last_post_id'] = str(post_id)
             env_vars['last_post_date'] = str(posted_date)
+            env_vars['does_post_exist'] = 'True'
             for key, value in env_vars.items():
                 set_key(".env", key, value)
-        does_post_exist = True
+        print("Post successful.")
+        return 'True'
     else:
         print("Waiting 7 days to post again...")
         # time.sleep(10)
@@ -67,16 +69,21 @@ def post_to_lemmy(currentWeekday, does_post_exist, wantedDay, wantedMonth, commu
         # wantedMonth = "June"    #Test
         time.sleep(43200)
         today, currentWeekday, wantedMonth, wantedDay = Bot_Utils.get_date()    # refresh date
+        env_vars = dotenv_values(".env")
+        env_vars['does_post_exist'] = 'True'
+        for key, value in env_vars.items():
+            set_key(".env", key, value)        
+        return 'False'   
 
 # Scrapes and creates title and body but posts it only into the console, not to Lemmy
 
 def post_locally(currentWeekday, does_post_exist, wantedDay, wantedMonth, title):
-    if currentWeekday == release_day and does_post_exist == False:
+    if int(currentWeekday) == int(release_day) and does_post_exist == 'False':
         # Call scraper to get release list
         wanted_list,wantedMonthString = ma_scraper.get_releaseList(wantedGenre,wantedDay,wantedMonth)
         # Create body text
         body = ""
-        body += (f'{wantedGenre} releases for {wantedDay} of {wantedMonthString}: \n')
+        body += (f'{wantedGenre} releases for {wantedDay}. of {wantedMonthString}: \n')
         for type in release_type_list:                                  # cheeky way of sorting the list
             releases_list = Bot_Utils.sortByReleaseType(type, wanted_list,wantedGenre,wantedDay,wantedMonthString)
             for string in releases_list:
@@ -90,11 +97,14 @@ def post_locally(currentWeekday, does_post_exist, wantedDay, wantedMonth, title)
         posted_date = "15.03.2023"
 
         if post_successful == True:
+            env_vars = dotenv_values(".env")
             env_vars['last_post_id'] = str(post_id)
             env_vars['last_post_date'] = str(posted_date)
+            env_vars['does_post_exist'] = 'True'
             for key, value in env_vars.items():
                 set_key(".env", key, value)
-        does_post_exist = True
+        print("Post successful.")
+        return 'True'
     else:
         print("Waiting 7 days to post again...")
         # time.sleep(10)
@@ -102,12 +112,18 @@ def post_locally(currentWeekday, does_post_exist, wantedDay, wantedMonth, title)
         # wantedDay = "23"          #Test
         # wantedMonth = "June"    #Test
         time.sleep(43200)
-        today, currentWeekday, wantedMonth, wantedDay = Bot_Utils.get_date()    # refresh date        
+        today, currentWeekday, wantedMonth, wantedDay = Bot_Utils.get_date()    # refresh date
+        env_vars = dotenv_values(".env")
+        env_vars['does_post_exist'] = 'True'
+        for key, value in env_vars.items():
+            set_key(".env", key, value)
+        return 'False'    
 
 # Bot runs only on friday
 while loop_bot == True:
-    if set_for_production == True:
-        post_to_lemmy(currentWeekday, does_post_exist, wantedDay, wantedMonth, community_id, lemmy_instance, title)
+    print("Looping")
+    if set_for_production == 'True':
+        does_post_exist = post_to_lemmy(currentWeekday, does_post_exist, wantedDay, wantedMonth, community_id, lemmy_instance, title)
     else:
         # Scrapes and creates title and body but posts it only into the console, not to Lemmy
-        post_locally(currentWeekday, does_post_exist, wantedDay, wantedMonth, title)
+        does_post_exist = post_locally(currentWeekday, does_post_exist, wantedDay, wantedMonth, title)
